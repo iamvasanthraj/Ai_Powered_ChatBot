@@ -1,0 +1,518 @@
+:root {
+  /* Professional Slate Theme */
+  --bg-app: #f8fafc;
+  /* Very light gray/white for main bg if light mode, or dark slate for dark mode. Let's stick to Dark Mode as requested but professional. */
+
+  /* Solid Dark Theme - "Corporate Dark" */
+  --bg-body: #0f172a;
+  /* Slate 900 */
+  --bg-sidebar: #1e293b;
+  /* Slate 800 */
+  --bg-surface: #334155;
+  /* Slate 700 */
+  --border-color: #334155;
+  /* Slate 700 */
+
+  --primary: #3b82f6;
+  /* Standard Blue 500 */
+  --primary-hover: #2563eb;
+  /* Blue 600 */
+
+  --text-main: #f1f5f9;
+  /* Slate 100 */
+  --text-muted: #94a3b8;
+  /* Slate 400 */
+  --text-inverse: #ffffff;
+
+  --danger: #ef4444;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background: var(--bg-body);
+  color: var(--text-main);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+}
+
+.app {
+  width: 100%;
+  display: flex;
+}
+
+/* Sidebar - Solid & Structured */
+.sidebar {
+  width: 260px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.brand-sub {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+button .icon {
+  font-size: 1rem;
+}
+
+button.primary {
+  background: var(--primary);
+  color: white;
+}
+
+button.primary:hover {
+  background: var(--primary-hover);
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+button.secondary:hover {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.list-head h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 8px 0 8px 4px;
+  font-weight: 600;
+}
+
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Custom Scrollbar - Minimal */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+.chat-row {
+  display: flex;
+  gap: 4px;
+}
+
+.chat-open-btn {
+  flex: 1;
+  justify-content: flex-start;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-open-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.chat-open-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.chat-delete-btn {
+  width: 32px;
+  padding: 0;
+  color: var(--text-muted);
+  border-radius: 4px;
+}
+
+.chat-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+/* Chat Area - Wide & Clean */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-body);
+  position: relative;
+  min-width: 0;
+  /* Prevents flex framing issues */
+}
+
+.chat-top {
+  height: 60px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-body);
+}
+
+.chat-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.mode-badge {
+  font-size: 0.75rem;
+  background: var(--bg-surface);
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  margin-left: 10px;
+}
+
+.chat-header-info {
+  display: flex;
+  align-items: center;
+}
+
+.messages {
+  flex: 1;
+  padding: 24px 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.msg {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* User & Assistant Alignments */
+.msg.user {
+  align-items: flex-end;
+}
+
+.msg.assistant {
+  align-items: flex-start;
+}
+
+/* Label styling */
+.msg.user::before {
+  content: "You";
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.msg.assistant::before {
+  content: "🤖";
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Bubbles - Flat & Readable */
+.content-bubble {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.msg.user .content-bubble {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  /* Optional: Light border for definition */
+  border: 1px solid var(--border-color);
+}
+
+.msg.assistant .content-bubble {
+  background: transparent;
+  color: var(--text-main);
+  padding-left: 0;
+  /* Align with left edge for readability */
+}
+
+/* Composer Area */
+.composer-container {
+  padding: 24px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-body);
+}
+
+.composer {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.composer input {
+  width: 100%;
+  padding: 14px 16px;
+  padding-right: 50px;
+  /* Space for button */
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.composer input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.send-btn {
+  position: absolute;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 4px;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-btn:hover {
+  background: var(--primary-hover);
+}
+
+.send-btn:disabled {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Typing Indicator */
+.typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  min-height: 24px;
+  /* Reset bubble padding if needed or keep it. 
+     If this is applied to .content-bubble, we want the bubble padding.
+     We just don't want a fixed height constraining it. */
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .list-head,
+  .chat-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    height: 50px;
+    align-items: center;
+  }
+
+  .list-head {
+    display: none;
+  }
+
+  /* Hide header on mobile compact */
+
+  .chat-list {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  /* Update delete button for better icon spacing */
+  .chat-delete-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    border-radius: 4px;
+    opacity: 0.6;
+    /* Subtle by default */
+    transition: all 0.2s;
+  }
+
+  .chat-row:hover .chat-delete-btn {
+    opacity: 1;
+  }
+
+  .chat-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+  }
+
+  .chat-row {
+    min-width: 140px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px;
+  }
+
+  .chat-open-btn {
+    text-align: center;
+  }
+}

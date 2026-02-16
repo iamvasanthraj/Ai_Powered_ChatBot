@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mediafirewall AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <!-- Background Effects -->
+
+
+  <div class="app-shell">
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div>
+            <h1>MediaFireWall</h1>
+            <p class="brand-sub">Premium Assistant</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="newChatBtn" class="primary">
+            <span class="icon">+</span> New Chat
+          </button>
+          <button id="tempChatBtn" class="secondary">
+            <span class="icon">⚡</span> Temporary Chat
+          </button>
+        </div>
+
+        <div class="list-head">
+          <h2>Your Chats</h2>
+        </div>
+        <ul id="chatList" class="chat-list"></ul>
+      </aside>
+
+      <main class="chat">
+        <header class="chat-top">
+          <div class="chat-header-info">
+            <p class="chat-title">AgentX</p>
+            <span id="modeBadge" class="mode-badge">Persistent</span>
+          </div>
+          <div class="window-controls">
+            <!-- Window controls simulation if needed, or just status -->
+            <span class="status-dot"></span>
+          </div>
+        </header>
+
+        <div id="messages" class="messages"></div>
+
+        <div class="composer-container">
+          <form id="composer" class="composer">
+            <div class="input-wrapper">
+              <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
+              <button type="submit" class="send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </form>
+          <p class="disclaimer">AI can make mistakes. Please check important info.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>
