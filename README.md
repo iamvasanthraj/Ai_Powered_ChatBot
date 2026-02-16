@@ -50,7 +50,7 @@ pip install -r requirements.txt
 Ensure you have a `.env` file in the `backend` folder with your API key:
 
 ```ini
-OPENROUTER_API_KEY=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
+OPENROUTER_API_KEY= [Your Key]
 MONGO_URL=mongodb://localhost:27017
 ```
 
