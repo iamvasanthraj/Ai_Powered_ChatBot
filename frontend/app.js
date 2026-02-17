@@ -21,6 +21,75 @@ function updateModeBadge() {
   modeBadgeEl.textContent = isTemporaryChat ? 'Temporary' : 'Persistent';
 }
 
+/**
+ * Downloads a file programmatically to avoid navigation issues.
+ * @param {string} url - The URL to download.
+ * @param {string} filename - The filename to save as.
+ */
+async function triggerDownload(url, filename) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Network response was not ok');
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = blobUrl;
+    a.download = filename; // Force download attribute
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(blobUrl);
+    document.body.removeChild(a);
+  } catch (err) {
+    console.error('Download failed:', err);
+    alert('Failed to download report. Please try again.');
+  }
+}
+
+// Global click handler for download buttons to intercept navigation
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.classList.contains('download-btn')) {
+    e.preventDefault(); // STOP navigation
+    const url = e.target.href;
+    // Extract filename from URL last segement
+    const filename = url.split('/').pop() || 'report.csv';
+    triggerDownload(url, filename);
+  }
+});
+
+function formatMessageContent(raw) {
+  let linked = raw;
+
+  // 1. Check for Markdown links [Label](URL)
+  const mdRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+  if (mdRegex.test(raw)) {
+    linked = raw.replace(mdRegex, (match, label, url) => {
+      const isReport = url.includes('/reports/');
+      const className = isReport ? 'download-btn' : '';
+      // Ensure URL is absolute if it's a report
+      const fullUrl = (isReport && url.startsWith('/')) ? `${API_BASE}${url}` : url;
+      return `<a href="${fullUrl}" class="${className}">${label}</a>`;
+    });
+  } else {
+    // 2. Fallback: Convert bare URLs
+    linked = raw.replace(
+      /(https?:\/\/[^\s]+|\/reports\/[^\s]+)/g,
+      (match) => {
+        const url = match;
+        const isReport = url.startsWith('/reports/');
+        const fullUrl = isReport ? `${API_BASE}${url}` : url;
+        const className = isReport ? 'download-btn' : '';
+        return `<a href="${fullUrl}" class="${className}">${url}</a>`;
+      }
+    );
+  }
+  return linked;
+}
+
 function typeText(element, text) {
   let index = 0;
   element.textContent = '';
@@ -33,6 +102,9 @@ function typeText(element, text) {
       messagesEl.scrollTop = messagesEl.scrollHeight;
       const delay = Math.floor(Math.random() * 20) + 10;
       setTimeout(nextChar, delay);
+    } else {
+      // Post-typing: use formatter
+      element.innerHTML = formatMessageContent(element.textContent);
     }
   }
   nextChar();
@@ -63,7 +135,8 @@ function renderMessages(messages) {
       m.animate = false;
       typeText(bubble, m.content);
     } else {
-      bubble.textContent = m.content;
+      // Render formatting immediately for history
+      bubble.innerHTML = formatMessageContent(m.content);
     }
   }
   messagesEl.scrollTop = messagesEl.scrollHeight;

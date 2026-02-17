@@ -7,7 +7,9 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+import os
 
 from db import get_db
 from mcp_server import orchestrate_llm
@@ -16,6 +18,14 @@ from utils import generate_title
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="MCP Chatbot API")
+
+# Ensure reports directory exists (in project root, one level up from backend)
+# This prevents uvicorn from auto-reloading when a report is generated
+REPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "reports")
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
+app.mount("/reports", StaticFiles(directory=REPORTS_DIR), name="reports")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

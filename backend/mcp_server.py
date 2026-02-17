@@ -11,6 +11,7 @@ from database import (
     dumps_json,
 )
 from db import resolve_knowledge_collection
+from report_generator import generate_report
 from query_generator import generate_pipeline_from_llm, execute_aggregation, generate_natural_response
 
 load_dotenv()
@@ -54,12 +55,29 @@ async def orchestrate_llm(user_message: str, history: List[Dict[str, Any]]) -> s
             else:
                  return f"I couldn't find any record with ID {media_id}."
 
-        # 2. If no ID, treat as an aggregation query
+        # 2. Check for Report Intent
+        is_report_request = any(keyword in user_message.lower() for keyword in ["excel", "csv", "download report", "generate report"])
+
+        # 3. If no ID, treat as an aggregation query
         logger.info("Generating aggregation pipeline...")
         pipeline = await generate_pipeline_from_llm(client, MODEL_ID, user_message)
         
         if not pipeline:
              return "I'm sorry, I couldn't understand how to query the data for that question."
+
+        if is_report_request:
+            logger.info("Report intent detected. Generating report.")
+            
+            # Determine format
+            is_csv = "csv" in user_message.lower()
+            file_format = "csv" if is_csv else "xlsx"
+            
+            filename = await generate_report(pipeline, format=file_format)
+            
+            if filename:
+                return f"I've generated the {file_format.upper()} report for you. You can download it here: [Download Report](/reports/{filename})"
+            else:
+                return "I was unable to generate the report. The query might have returned no results (or only a count)."
 
         logger.info(f"Executing pipeline: {pipeline}")
         results = await execute_aggregation(pipeline)
@@ -67,7 +85,7 @@ async def orchestrate_llm(user_message: str, history: List[Dict[str, Any]]) -> s
         if isinstance(results, str) and results.startswith("Error"):
              return f"I encountered an error querying the database: {results}"
              
-        # 3. Generate natural language response
+        # 4. Generate natural language response
         return await generate_natural_response(client, MODEL_ID, user_message, results)
 
     except Exception as e:

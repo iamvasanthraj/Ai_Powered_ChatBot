@@ -5,3 +5,5 @@ python-dotenv
 pydantic
 motor
 openai
+openpyxl
+aiofiles

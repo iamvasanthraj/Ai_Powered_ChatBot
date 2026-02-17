@@ -1,0 +1,10 @@
+{
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/.git/**",
+        "**/backend/reports/**",
+        "**/reports/**",
+        "**/*.csv",
+        "**/*.xlsx"
+    ]
+}

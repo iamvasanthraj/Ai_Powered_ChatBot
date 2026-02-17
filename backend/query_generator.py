@@ -24,6 +24,11 @@ Rules:
 5. For aggregations (counts, averages), use appropriate stages ($match, $group, $project).
 6. Handle type conversions if necessary (e.g., converting "MediaProcessingTimeInSeconds" from string to double using $toDouble).
 7. Ensure the pipeline is read-only. No $out, $merge, or $update.
+8. **Feature Mapping Rule**: If the user asks about "Nudity", "Minor", "ImageSearch", "Violence", etc., being true/false, you MUST use the `processStatus.featureStatus.<FeatureName>` field.
+   - Example: "count of nudity is true" -> `{{ "processStatus.featureStatus.Nudity": true }}`
+   - Example: "nudity is false" -> `{{ "processStatus.featureStatus.Nudity": false }}`
+   - Do NOT query `eventLog` or check for `$exists` unless explicitly asked.
+9. For "exact" date/time queries (e.g., "exactly at 2023...", "document exactly eventStartTime..."), INDEPENDENT of whether the user asks to "count", "find", or "generate csv/report", you MUST use strict equality (`$eq`) for that specific field. Do NOT use `$gte`/`$lte` ranges for exact timestamps. This is critical for report consistency.
 
 Example Output:
 [
@@ -67,6 +72,8 @@ async def generate_pipeline_from_llm(client, model: str, question: str) -> List[
         logger.error(f"Error generating pipeline: {e}")
         return []
 
+from utils import convert_dates
+
 async def execute_aggregation(pipeline: List[Dict[str, Any]]) -> Any:
     """
     Executes the aggregation pipeline against the database.
@@ -83,6 +90,9 @@ async def execute_aggregation(pipeline: List[Dict[str, Any]]) -> Any:
         for stage in pipeline:
             if any(k in stage for k in ["$out", "$merge", "$write"]):
                  raise ValueError("Unsafe aggregation stage detected.")
+
+        # Convert date strings to datetime objects
+        pipeline = convert_dates(pipeline)
 
         results = await collection.aggregate(pipeline).to_list(length=100) # Limit results for safety
         return results

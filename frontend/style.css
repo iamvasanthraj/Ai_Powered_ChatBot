@@ -109,6 +109,36 @@ body {
   gap: 8px;
 }
 
+
+
+.download-btn {
+  display: block;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: var(--primary);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn:hover {
+  background-color: var(--primary-hover);
+  color: white;
+}
+
+.download-btn::before {
+  content: "⬇";
+  /* Unicode download arrow */
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
 button {
   all: unset;
   cursor: pointer;
